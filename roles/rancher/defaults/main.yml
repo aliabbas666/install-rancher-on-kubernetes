@@ -1,0 +1,4 @@
+---
+
+# The release version of Rancher, choose 'stable' or 'latest'
+rancher_release: stable

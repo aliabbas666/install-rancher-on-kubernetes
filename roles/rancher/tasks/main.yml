@@ -1,0 +1,4 @@
+---
+
+- import_tasks: cert-manager.yml
+- import_tasks: rancher.yml

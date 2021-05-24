@@ -1,0 +1,25 @@
+---
+
+- name: Get latest Helm release version
+  ansible.builtin.uri:
+    url: https://github.com/helm/helm/releases/latest
+  register: helm_version
+
+# helm_version variable contains url with latest version number
+- name: Get latest Helm release binary
+  ansible.builtin.get_url:
+    url: https://get.helm.sh/helm-{{ helm_version.url | regex_replace('.*tag/', '') }}-linux-{{ host_platform_architecture }}.tar.gz
+    dest: /tmp
+  register: helm_binary
+
+- name: Unarchive Helm binary
+  ansible.builtin.unarchive:
+    src: "{{ helm_binary.dest }}"
+    dest: /tmp
+
+- name: Move Helm executable to /usr/local/bin
+  ansible.builtin.copy:
+    src: "/tmp/{{ helm_binary.dest | regex_replace('.*(linux.*).tar.gz', '\\1') }}/helm"
+    dest: /usr/local/bin/helm
+    mode: '0755'
+  become: true

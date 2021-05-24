@@ -1,0 +1,40 @@
+---
+
+- name: Add {{ rancher_release }} Rancher Helm chart repository
+  community.kubernetes.helm_repository:
+    name: "rancher-{{ rancher_release }}"
+    repo_url: "https://releases.rancher.com/server-charts/{{ rancher_release }}"
+
+- name: Create namespace for Rancher
+  community.kubernetes.k8s:
+    name: cattle-system
+    api_version: v1
+    kind: Namespace
+    kubeconfig: /tmp/.kube-config
+    state: present
+
+- name: Install Rancher from Helm repository
+  community.kubernetes.helm:
+    name: rancher
+    chart_ref: "rancher-{{ rancher_release }}/rancher"
+    release_namespace: cattle-system
+    update_repo_cache: true
+    kubeconfig: /tmp/.kube-config
+    values:
+      hostname: rancher.test.local
+    wait: yes
+    state: present
+
+- name: Expose Rancher deployment with NodePort
+  community.kubernetes.k8s_service:
+    name: rancher-nodeport
+    namespace: cattle-system
+    type: NodePort
+    selector:
+      app: rancher
+    ports:
+      - port: 443
+        protocol: TCP
+    kubeconfig: /tmp/.kube-config
+    state: present
+  
