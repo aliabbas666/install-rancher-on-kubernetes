@@ -22,7 +22,7 @@
     kubeconfig: /tmp/.kube-config
     values:
       hostname: rancher.test.local
-    wait: yes
+    wait: true
     state: present
 
 - name: Expose Rancher deployment with NodePort

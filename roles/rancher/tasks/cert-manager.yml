@@ -23,5 +23,5 @@
     kubeconfig: /tmp/.kube-config
     values:
       installCRDs: true
-    wait: yes
+    wait: true
     state: present
