@@ -1,0 +1,13 @@
+#setup k3s
+#https://github.com/alexellis/k3sup
+#run in the same machine
+#ssh-keygen
+#ssh-copy-id root@213.171.215.214 
+#curl -sLS https://get.k3sup.dev | sh
+#k3sup install --ip 213.171.215.214 --user root
+
+#path to kube config file is path=./kubeconfig
+
+
+#deploy rancher on kubernetesw
+#https://github.com/TimGrt/rancher-installation
